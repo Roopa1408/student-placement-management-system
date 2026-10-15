@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Details - Placement Management System{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 800px;">
+
+    <h1 class="mb-4">Student Details</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <p><strong>Name:</strong> {{ student.name }}</p>
+            <p><strong>Email:</strong> {{ student.email }}</p>
+            <p><strong>Phone:</strong> {{ student.phone }}</p>
+            <p><strong>Course:</strong> {{ student.course }}</p>
+            <p><strong>Department:</strong> {{ student.department }}</p>
+            <p><strong>Year:</strong> {{ student.year }}</p>
+            <p><strong>CGPA:</strong> {{ student.cgpa }}</p>
+            <p><strong>Skills:</strong> {{ student.skills }}</p>
+
+            <a href="{% url 'student_list' %}" class="btn btn-secondary mt-3">
+                Back to Student List
+            </a>
+
+        </div>
+    </div>
+{% endblock %}

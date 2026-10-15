@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Add Student - Placement Management System{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4" style="max-width: 800px;">
+
+    <h1 class="mb-4">Add Student</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-primary">
+                    Add Student
+                </button>
+
+                <a href="/students/" class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

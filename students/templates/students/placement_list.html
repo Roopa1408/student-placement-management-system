@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placements - Student Placement Management System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+            Student Placement System
+        </a>
+
+        <div>
+            <a href="{% url 'student_list' %}" class="btn btn-light btn-sm me-2">
+                Students
+            </a>
+            <a href="{% url 'company_list' %}" class="btn btn-light btn-sm">
+                Companies
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2>Placement Applications</h2>
+
+        <div>
+            <a href="{% url 'add_placement' %}" class="btn btn-primary">
+                + Add Placement
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+
+                <div class="col-md-5">
+                    <input type="text"
+                           name="q"
+                           class="form-control"
+                           placeholder="Search student or company"
+                           value="{{ query|default:'' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <select name="status" class="form-select">
+                        <option value="">All Statuses</option>
+
+                        <option value="Applied"
+                            {% if status == "Applied" %}selected{% endif %}>
+                            Applied
+                        </option>
+
+                        <option value="Shortlisted"
+                            {% if status == "Shortlisted" %}selected{% endif %}>
+                            Shortlisted
+                        </option>
+
+                        <option value="Selected"
+                            {% if status == "Selected" %}selected{% endif %}>
+                            Selected
+                        </option>
+
+                        <option value="Rejected"
+                            {% if status == "Rejected" %}selected{% endif %}>
+                            Rejected
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">
+                        Search
+                    </button>
+
+                    <a href="{% url 'placement_list' %}"
+                       class="btn btn-outline-secondary">
+                        Clear
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Placement Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped table-hover align-middle">
+
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Student</th>
+                            <th>Company</th>
+                            <th>Job Role</th>
+                            <th>Package</th>
+                            <th>Status</th>
+                            <th>Applied Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for placement in placements %}
+                        <tr>
+                            <td>{{ placement.student.name }}</td>
+                            <td>{{ placement.company.name }}</td>
+                            <td>{{ placement.job_role }}</td>
+                            <td>{{ placement.package|default:"—" }}</td>
+
+                            <td>
+                                {% if placement.status == "Selected" %}
+                                    <span class="badge bg-success">
+                                        {{ placement.status }}
+                                    </span>
+                                {% elif placement.status == "Rejected" %}
+                                    <span class="badge bg-danger">
+                                        {{ placement.status }}
+                                    </span>
+                                {% elif placement.status == "Shortlisted" %}
+                                    <span class="badge bg-info text-dark">
+                                        {{ placement.status }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-primary">
+                                        {{ placement.status }}
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td>{{ placement.applied_date|default:"—" }}</td>
+
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'edit_placement' placement.id %}"
+                                       class="btn btn-warning btn-sm">
+                                        Edit
+                                    </a>
+
+                                    <a href="{% url 'delete_placement' placement.id %}"
+                                       class="btn btn-danger btn-sm">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                No placement applications found.
+                                <br>
+                                Try changing your search or add a placement.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
